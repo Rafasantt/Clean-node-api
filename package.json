@@ -1,0 +1,21 @@
+{
+  "name": "clean-node-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.4.9",
+    "eslint-config-standard-with-typescript": "^37.0.0",
+    "git-commit-msg-linter": "^5.0.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
+    "typescript": "^5.1.6"
+  }
+}
