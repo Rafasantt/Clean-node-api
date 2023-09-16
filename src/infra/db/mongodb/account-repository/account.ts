@@ -1,4 +1,4 @@
-import type { AddAccountRepository } from '../../../../data/protocols/add-account-repository'
+import type { AddAccountRepository } from '../../../../data/protocols/db/add-account-repository'
 import type { AccountModel } from '../../../../domain/models/account'
 import type { AddAccountModel } from '../../../../domain/usecases/add-account'
 import { MongoHelper } from '../helpers/mongo-helper'
@@ -8,7 +8,9 @@ export class AccountMongoRepository implements AddAccountRepository {
     const accountCollection = MongoHelper.getCollection('accounts')
     const accountToBeInserted = Object.assign({}, accountData)
     const result = await accountCollection.insertOne(accountToBeInserted)
-    const account = Object.assign({}, accountData, { id: result.insertedId.toHexString() })
+    const account = Object.assign({}, accountData, {
+      id: result.insertedId.toHexString()
+    })
     return account
   }
 }
