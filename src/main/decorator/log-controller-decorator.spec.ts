@@ -4,8 +4,8 @@ import type {
   httpRequest,
   httpResponse
 } from '../../presentation/protocols'
-import type { LogErrorRepository } from '../../data/protocols/db/log-error-repository'
-import { LogControllerDecorator } from './log'
+import type { LogErrorRepository } from '../../data/protocols/db/log/log-error-repository'
+import { LogControllerDecorator } from './log-controller-decorator'
 import type { AccountModel } from '../../domain/models/account'
 
 const makeController = (): Controller => {
