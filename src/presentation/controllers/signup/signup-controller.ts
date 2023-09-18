@@ -23,12 +23,12 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
       const { name, email, password } = httpRequest.body
-      const account = await this.addAccount.add({
+      await this.addAccount.add({
         name,
         email,
         password
       })
-      return ok(account)
+      return ok({ message: 'Conta criada com sucesso' })
     } catch (error) {
       return serverError(error)
     }
