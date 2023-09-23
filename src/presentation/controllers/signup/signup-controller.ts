@@ -3,18 +3,17 @@ import type {
   httpResponse,
   Controller,
   AddAccount,
-  Validation
+  Validation,
+  Authentication
 } from './signup-controller-protocols'
 import { badRequest, serverError, ok } from '../../helpers/http/http-helper'
 
 export class SignUpController implements Controller {
-  private readonly addAccount: AddAccount
-  private readonly validation: Validation
-
-  constructor (addAccount: AddAccount, validation: Validation) {
-    this.addAccount = addAccount
-    this.validation = validation
-  }
+  constructor (
+    private readonly addAccount: AddAccount,
+    private readonly validation: Validation,
+    private readonly authentication: Authentication
+  ) {}
 
   async handle (httpRequest: httpRequest): Promise<httpResponse> {
     try {
@@ -23,12 +22,16 @@ export class SignUpController implements Controller {
         return badRequest(error)
       }
       const { name, email, password } = httpRequest.body
-      await this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password
       })
-      return ok({ message: 'Conta criada com sucesso' })
+      await this.authentication.auth({
+        email,
+        password
+      })
+      return ok(account)
     } catch (error) {
       return serverError(error)
     }

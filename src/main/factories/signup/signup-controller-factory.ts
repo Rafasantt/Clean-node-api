@@ -11,7 +11,7 @@ export const makeSignUpController = (): Controller => {
   const salt = 12
   const bcryptAdapter = new BcryptAdapter(salt)
   const accountMongoRepository = new AccountMongoRepository()
-  const dbAddAccount = new DbAddAccount(bcryptAdapter, accountMongoRepository)
+  const dbAddAccount = new DbAddAccount(bcryptAdapter, accountMongoRepository, accountMongoRepository)
   const signUpController = new SignUpController(
     dbAddAccount,
     makeSignUpValidation()
