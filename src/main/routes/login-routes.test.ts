@@ -21,7 +21,7 @@ describe('Login Routes', () => {
   })
 
   describe('POST /signup', () => {
-    test('Should return 200 on signup', async () => {
+    test('Should return 403 on signup without accessToken', async () => {
       await request(app)
         .post('/api/signup')
         .send({
@@ -30,7 +30,7 @@ describe('Login Routes', () => {
           password: '1234',
           passwordConfirmation: '1234'
         })
-        .expect(200)
+        .expect(403)
     })
   })
 
