@@ -1,8 +1,10 @@
 import request from 'supertest'
 import app from '../config/app'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper'
-import type { Collection } from 'mongodb'
+import { ObjectId, type Collection } from 'mongodb'
 import { hash } from 'bcrypt'
+import { sign } from 'jsonwebtoken'
+import env from '../config/env'
 
 let accountCollection: Collection
 
@@ -26,11 +28,39 @@ describe('Login Routes', () => {
         .post('/api/signup')
         .send({
           name: 'Rafael',
-          email: 'rafael_santos.s1@hotmail.com',
-          password: '1234',
-          passwordConfirmation: '1234'
+          email: 'rafaelsantos@hotmail.com',
+          password: '123',
+          passwordConfirmation: '123'
         })
         .expect(403)
+    })
+
+    test('Should return 204 on signup with valid accessToken', async () => {
+      const res = await accountCollection.insertOne({
+        name: 'Rafael',
+        email: 'rafaelSantos@hotmail.com',
+        password: '1234',
+        role: 'admin'
+      })
+      const id = res.insertedId.toHexString()
+      const accessToken = sign({ id }, env.jwtSecret)
+      await accountCollection.updateOne({
+        _id: new ObjectId(id)
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+      await request(app)
+        .post('/api/signup')
+        .set('x-access-token', accessToken)
+        .send({
+          name: 'Novo User',
+          email: 'novoUser@hotmail.com',
+          password: 'abc123',
+          passwordConfirmation: 'abc123'
+        })
+        .expect(204)
     })
   })
 

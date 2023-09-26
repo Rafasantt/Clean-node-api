@@ -25,3 +25,8 @@ export const ok = (data: any): httpResponse => ({
   statusCode: 200,
   body: data
 })
+
+export const noContent = (): httpResponse => ({
+  statusCode: 204,
+  body: null
+})
